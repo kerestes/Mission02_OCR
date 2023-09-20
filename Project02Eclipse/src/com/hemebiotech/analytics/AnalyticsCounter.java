@@ -4,16 +4,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AnalyticsCounter {
 
 	private WriteSymptomDataToFile writer;
 	private ReadSymptomDataFromFile reader;
 
-	public AnalyticsCounter(String pathToWrite, String pathToRead) {
-		writer = new WriteSymptomDataToFile(pathToWrite);
-		reader = new ReadSymptomDataFromFile(pathToRead);
+	public AnalyticsCounter(ReadSymptomDataFromFile reader, WriteSymptomDataToFile writer) {
+		this.writer = writer;
+		this.reader = reader;
 	}
 
 	public List<String> getSymptoms(){

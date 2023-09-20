@@ -1,43 +1,53 @@
 package com.hemebiotech.analytics;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnalyticsCounter {
-	private static int headacheCount = 0;	
-	private static int rashCount = 0;		
-	private static int pupilCount = 0;		
-	
-	public static void main(String args[]) throws Exception {
-		
-		BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
-		String line = reader.readLine();
 
-		int i = 0;	
-		int headCount = 0;	
-		while (line != null) {
-			i++;	
-			System.out.println("symptom from file: " + line);
-			if (line.equals("headache")) {
-				headCount++;
-				System.out.println("number of headaches: " + headCount);
-			}
-			else if (line.equals("rush")) {
-				rashCount++;
-			}
-			else if (line.contains("pupils")) {
-				pupilCount++;
+	private WriteSymptomDataToFile writer;
+	private ReadSymptomDataFromFile reader;
+
+	public AnalyticsCounter(String pathToWrite, String pathToRead) {
+		writer = new WriteSymptomDataToFile(pathToWrite);
+		reader = new ReadSymptomDataFromFile(pathToRead);
+	}
+
+	public List<String> getSymptoms(){
+		return reader.GetSymptoms();
+	}
+
+	public LinkedHashMap<String, Integer> countSymptoms (List<String> listSymptom){
+		LinkedHashMap<String, Integer> lhm = new LinkedHashMap<>();
+
+		listSymptom.forEach(item -> {
+				if(lhm.containsKey(item)){
+						int i = lhm.get(item);
+						i++;
+						lhm.put(item, i);
+				} else {
+						lhm.put(item, 1);
+				}
+		});
+
+		return lhm;
+    }
+
+	public void sortSymptoms(List<String> list){
+		Collections.sort(list, new Comparator<String>() {
+
+			@Override
+			public int compare(String arg0, String arg1) {
+					return arg0.compareTo(arg1);
 			}
 
-			line = reader.readLine();	
-		}
-		
-		
-		FileWriter writer = new FileWriter ("result.out");
-		writer.write("headache: " + headacheCount + "\n");
-		writer.write("rash: " + rashCount + "\n");
-		writer.write("dialated pupils: " + pupilCount + "\n");
-		writer.close();
+		});
+    }
+
+	public void writeSymptoms(LinkedHashMap<String, Integer> symptoms) { 
+		writer.writeSymptoms(symptoms);
 	}
 }

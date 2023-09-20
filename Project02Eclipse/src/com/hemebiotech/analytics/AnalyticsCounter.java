@@ -15,14 +15,22 @@ public class AnalyticsCounter {
 		this.reader = reader;
 	}
 
+	/**
+	 * @return the source file symptom list
+	 */
 	public List<String> getSymptoms(){
 		return reader.GetSymptoms();
 	}
 
-	public LinkedHashMap<String, Integer> countSymptoms (List<String> listSymptom){
+	
+	/**
+	 * @param the source file symptom list (preferred order)
+	 * @return a LinkedHashMap with symptoms in the same order as the entry list and with their respective counters
+	 */
+	public LinkedHashMap<String, Integer> countSymptoms (List<String> symptomsList){
 		LinkedHashMap<String, Integer> lhm = new LinkedHashMap<>();
 
-		listSymptom.forEach(item -> {
+		symptomsList.forEach(item -> {
 				if(lhm.containsKey(item)){
 						int i = lhm.get(item);
 						i++;
@@ -35,8 +43,11 @@ public class AnalyticsCounter {
 		return lhm;
     }
 
-	public void sortSymptoms(List<String> list){
-		Collections.sort(list, new Comparator<String>() {
+	/**
+	 * @param a source file symptom list 
+	 */
+	public void sortSymptoms(List<String> symptomsList){
+		Collections.sort(symptomsList, new Comparator<String>() {
 
 			@Override
 			public int compare(String arg0, String arg1) {
@@ -46,6 +57,9 @@ public class AnalyticsCounter {
 		});
     }
 
+	/**
+	 * @param a LinkedHashMap with symptoms and their count
+	 */
 	public void writeSymptoms(LinkedHashMap<String, Integer> symptoms) { 
 		writer.writeSymptoms(symptoms);
 	}

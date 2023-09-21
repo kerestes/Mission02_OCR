@@ -7,10 +7,10 @@ import java.util.List;
 
 public class AnalyticsCounter {
 
-	private WriteSymptomDataToFile writer;
-	private ReadSymptomDataFromFile reader;
+	private ISymptomWriter writer;
+	private ISymptomReader reader;
 
-	public AnalyticsCounter(ReadSymptomDataFromFile reader, WriteSymptomDataToFile writer) {
+	public AnalyticsCounter(ISymptomReader reader, ISymptomWriter writer) {
 		this.writer = writer;
 		this.reader = reader;
 	}
